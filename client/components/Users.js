@@ -65,7 +65,7 @@ export default class Users extends Component {
 				.then(({ count, users }) => {
 					// console.log('count: ', count);
 					// console.log('users: ', users);
-					this.setState({ count, users }, () =>
+					this.setState({ count, users, term }, () =>
 						console.log('state from search: ', this.state)
 					);
 				})
@@ -108,7 +108,7 @@ export default class Users extends Component {
 				.then(({ count, users }) => {
 					// console.log('count: ', count);
 					// console.log('users: ', users);
-					this.setState({ count, users }, () =>
+					this.setState({ count, users, term }, () =>
 						console.log('state after onSubmit search: ', this.state)
 					);
 				})
@@ -127,10 +127,22 @@ export default class Users extends Component {
 			'Email',
 			'Title'
 		];
-		const { match, history } = this.props;
-		const currentPage = match.params.usersIndex
-			? Number(match.params.usersIndex) + 1
-			: 1;
+		const { match, history, location } = this.props;
+
+		// console.log('location: ', location);
+
+		let currentPage = '';
+
+		if (location.pathname.includes('/search')) {
+			currentPage = match.params.searchIndex
+				? Number(match.params.searchIndex) + 1
+				: 1;
+		} else {
+			currentPage = match.params.usersIndex
+				? Number(match.params.usersIndex) + 1
+				: 1;
+		}
+
 		const totalPages = Math.ceil(count / 50);
 
 		return (
@@ -144,7 +156,7 @@ export default class Users extends Component {
 					history={history}
 					match={match}
 				/>
-				<SearchForm onSubmit={this.onSubmit} />
+				<SearchForm onSubmit={this.onSubmit} history={history} />
 				<table className='table table-striped'>
 					<thead>
 						<tr>

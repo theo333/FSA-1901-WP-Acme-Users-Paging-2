@@ -36,14 +36,20 @@ export default class SearchForm extends Component {
 		);
 	};
 
+	clear = () => {
+		console.log('history: ', this.props);
+		this.props.history.push('/users');
+	};
+
 	render() {
-		const { onChange } = this;
+		const { onChange, clear } = this;
 		const { onSubmit } = this.props;
 		const { term } = this.state;
 		return (
 			<form onSubmit={onSubmit(term)}>
 				<input name='term' value={this.state.term} onChange={onChange} />
 				<button type='submit'>Search</button>
+				<button onClick={clear}>Clear</button>
 			</form>
 		);
 	}
