@@ -8,6 +8,10 @@ app.get('/app.js', (req, res, next) =>
 	res.sendFile(path.join(__dirname, '../dist', 'main.js'))
 );
 
+app.get('/style.css', (req, res, next) =>
+	res.sendFile(path.join(__dirname, '../client', 'style.css'))
+);
+
 app.get('/', (req, res, next) =>
 	res.sendFile(path.join(__dirname, '../client', 'index.html'))
 );
