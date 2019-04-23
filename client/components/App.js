@@ -16,8 +16,12 @@ export default () => {
 				<section id='content'>
 					<Route path='/' exact component={Home} />
 					{/* <Route path='/users' exact component={Users} /> */}
-					<Route path='/users/:id?' exact component={Users} />
-					<Route path='/users/search/:term' exact component={Search} />
+					<Route path='/users/:usersIndex?' exact component={Users} />
+					<Route
+						path='/users/search/:term/:searchIndex?'
+						exact
+						component={Users}
+					/>
 				</section>
 			</Fragment>
 		</Router>

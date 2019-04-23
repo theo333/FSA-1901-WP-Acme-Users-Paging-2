@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 // TODO - change to class because have a class method - gotoPage
 
 export default ({ currentPage, totalPages, history, match }) => {
-	const current = Number(match.params.id) || 0;
+	const current = Number(match.params.usersIndex) || 0;
 
 	const gotoPage = id => {
 		// console.log('id: ', id);

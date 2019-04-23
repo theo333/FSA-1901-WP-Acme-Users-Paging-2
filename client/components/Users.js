@@ -13,6 +13,7 @@ export default class Users extends Component {
 			users: [],
 			term: ''
 		};
+		console.log(this.props);
 	}
 
 	componentDidMount() {
@@ -21,10 +22,19 @@ export default class Users extends Component {
 
 	componentDidUpdate(prevProps) {
 		const previous =
-			prevProps.match.params.id !== undefined ? prevProps.match.params.id : 0;
+			prevProps.match.params.usersIndex !== undefined
+				? prevProps.match.params.usersIndex
+				: 0;
 
 		const current =
-			this.props.match.params.id !== undefined ? this.props.match.params.id : 0;
+			this.props.match.params.usersIndex !== undefined
+				? this.props.match.params.usersIndex
+				: 0;
+		// const previous =
+		// 	prevProps.match.url !== undefined ? prevProps.match.url : 'users/0';
+
+		// const current =
+		// 	this.props.match.url !== undefined ? this.props.match.url : 'users/0';
 
 		if (previous !== current) {
 			this.setLocalState();
@@ -32,23 +42,80 @@ export default class Users extends Component {
 	}
 
 	setLocalState = () => {
-		const id =
-			this.props.match.params.id !== undefined
-				? this.props.match.params.id
-				: '';
-		axios
-			.get(`https://acme-users-api.herokuapp.com/api/users/${id ? id : ''}`)
-			.then(resp => resp.data)
-			.then(({ count, users }) => {
-				// console.log('count: ', count);
-				// console.log('users: ', users);
-				this.setState(
-					{ count, users }
-					// () => console.log('state: ', this.state)
-				);
-			})
+		console.log('props: ', this.props);
+		// if ((this.props.location.pathname === '/search')) {
+		// if (this.props.match.url === '/search') {
+		if (this.props.location.pathname.includes('/search')) {
+			const term =
+				this.props.match.params.term !== undefined
+					? this.props.match.params.term
+					: '';
 
-			.catch(err => console.log(err));
+			const searchIndex =
+				this.props.match.params.searchIndex !== undefined
+					? this.props.match.params.searchIndex
+					: '';
+			axios
+				.get(
+					`https://acme-users-api.herokuapp.com/api/users/search/${term}${
+						searchIndex ? searchIndex + '/' : ''
+					}`
+				)
+				.then(resp => resp.data)
+				.then(({ count, users }) => {
+					// console.log('count: ', count);
+					// console.log('users: ', users);
+					this.setState({ count, users }, () =>
+						console.log('state from search: ', this.state)
+					);
+				})
+
+				.catch(err => console.log(err));
+		} else {
+			// if (this.props.location.pathname === '/users') {
+			// if (this.props.match.url === '/users') {
+			const usersIndex =
+				this.props.match.params.usersIndex !== undefined
+					? this.props.match.params.usersIndex
+					: '';
+			axios
+				.get(
+					`https://acme-users-api.herokuapp.com/api/users/${
+						usersIndex ? usersIndex : ''
+					}`
+				)
+				.then(resp => resp.data)
+				.then(({ count, users }) => {
+					// console.log('count: ', count);
+					// console.log('users: ', users);
+					this.setState({ count, users }, () =>
+						console.log('state from users: ', this.state)
+					);
+				})
+
+				.catch(err => console.log(err));
+		}
+	};
+
+	onSubmit = term => {
+		return ev => {
+			console.log('ev: ', ev);
+			ev.preventDefault();
+			console.log('onSubmit');
+			axios
+				.get(`https://acme-users-api.herokuapp.com/api/users/search/${term}`)
+				.then(resp => resp.data)
+				.then(({ count, users }) => {
+					// console.log('count: ', count);
+					// console.log('users: ', users);
+					this.setState({ count, users }, () =>
+						console.log('state after onSubmit search: ', this.state)
+					);
+				})
+				.then(() => this.props.history.push(`/users/search/${term}`))
+
+				.catch(err => console.log(err));
+		};
 	};
 
 	render() {
@@ -61,7 +128,9 @@ export default class Users extends Component {
 			'Title'
 		];
 		const { match, history } = this.props;
-		const currentPage = match.params.id ? Number(match.params.id) + 1 : 1;
+		const currentPage = match.params.usersIndex
+			? Number(match.params.usersIndex) + 1
+			: 1;
 		const totalPages = Math.ceil(count / 50);
 
 		return (
@@ -75,7 +144,7 @@ export default class Users extends Component {
 					history={history}
 					match={match}
 				/>
-				<SearchForm />
+				<SearchForm onSubmit={this.onSubmit} />
 				<table className='table table-striped'>
 					<thead>
 						<tr>

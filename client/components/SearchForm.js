@@ -9,24 +9,25 @@ export default class SearchForm extends Component {
 		};
 	}
 
-	onSubmit = ev => {
-		ev.preventDefault();
-		console.log('onSubmit');
-		axios
-			.get(
-				`https://acme-users-api.herokuapp.com/api/users/search/${
-					this.state.term
-				}`
-			)
-			.then(resp => resp.data)
-			.then(users => {
-				// this.setState();
-				console.log('users: ', users);
-			})
-			.catch(err => console.log(err));
-	};
+	// onSubmit = ev => {
+	// 	ev.preventDefault();
+	// 	console.log('onSubmit');
+	// 	axios
+	// 		.get(
+	// 			`https://acme-users-api.herokuapp.com/api/users/search/${
+	// 				this.state.term
+	// 			}`
+	// 		)
+	// 		.then(resp => resp.data)
+	// 		.then(users => {
+	// 			// this.setState();
+	// 			console.log('users: ', users);
+	// 		})
+	// 		.catch(err => console.log(err));
+	// };
 
 	onChange = ev => {
+		// console.log('ev: ', ev);
 		this.setState(
 			{
 				term: ev.target.value
@@ -36,9 +37,11 @@ export default class SearchForm extends Component {
 	};
 
 	render() {
-		const { onChange, onSubmit } = this;
+		const { onChange } = this;
+		const { onSubmit } = this.props;
+		const { term } = this.state;
 		return (
-			<form onSubmit={onSubmit}>
+			<form onSubmit={onSubmit(term)}>
 				<input name='term' value={this.state.term} onChange={onChange} />
 				<button type='submit'>Search</button>
 			</form>
