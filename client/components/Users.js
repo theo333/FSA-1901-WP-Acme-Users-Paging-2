@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import Pager from './Pager';
 import SearchForm from './SearchForm';
+import { displayHighlight } from './Highlight';
 
 export default class Users extends Component {
 	constructor(props) {
@@ -185,51 +186,18 @@ export default class Users extends Component {
 								title
 							} = user;
 
-							// const color = email.includes('Zachary') ? `gold` : `black`;
-							const color = 'gold';
-							// .replace(regex, `<span>${matchStr}</span>`)
-							var regex = /(Zachary)/g;
-							var matchStr = 'Zachary';
-
-							const highlight = (text, word) => {
-								const regex = new RegExp('(' + word + ')', 'gi');
-								// const regex = /(word)/gi;
-								// console.log('regex: ', regex);
-								// console.log('orig text: ', text);
-								// text.replace(regex, '$&,');
-
-								const result = text.replace(
-									regex,
-									(str, matched, offset, input) => {
-										// console.log('matched: ', `<span>${matched}</span>`);
-										return `<span class='highlight'>${matched}</span>`;
-									}
-								);
-
-								console.log('new text: ', result);
-								return result;
-							};
-							console.log(highlight(email, term));
-
-							const _email = term ? highlight(email, term) : email;
-							const _middleName = term
-								? highlight(middleName, term)
-								: middleName;
-
+							const userFields = [
+								firstName,
+								lastName,
+								middleName,
+								email,
+								title
+							];
 							return (
 								<tr key={id}>
-									<td>{firstName}</td>
-									<td>{lastName}</td>
-									<td>{_middleName}</td>
-									<td>
-										<div
-											dangerouslySetInnerHTML={{
-												__html: highlight(email, term)
-											}}
-										/>
-									</td>
-									{/* <td>{_email}</td> */}
-									<td>{title}</td>
+									{userFields.map((field, idx) => {
+										return <td key={idx}>{displayHighlight(field, term)}</td>;
+									})}
 								</tr>
 							);
 						})}
