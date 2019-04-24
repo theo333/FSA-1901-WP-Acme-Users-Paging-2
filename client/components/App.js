@@ -15,7 +15,6 @@ export default () => {
 				</header>
 				<section id='content'>
 					<Route path='/' exact component={Home} />
-					{/* <Route path='/users' exact component={Users} /> */}
 					<Route path='/users/:usersIndex?' exact component={Users} />
 					<Route
 						path='/users/search/:term/:searchIndex?'

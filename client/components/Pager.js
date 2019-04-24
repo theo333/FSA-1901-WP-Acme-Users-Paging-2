@@ -5,8 +5,9 @@ import React, { Component } from 'react';
 export default ({ currentPage, totalPages, history, match }) => {
 	// const current = Number(match.params.usersIndex) || 0;
 	const current = currentPage || 0;
-	console.log('pager match: ', match);
+	// console.log('pager match: ', match);
 
+	// TODO - when do hard reload on search page, does not show user data
 	const gotoPage = pageNum => {
 		// console.log('pageNum: ', pageNum);
 		// console.log('current: ', current);
@@ -20,7 +21,7 @@ export default ({ currentPage, totalPages, history, match }) => {
 		return history.push(path);
 	};
 	return (
-		<div className='btn-group'>
+		<div id='pager' className='btn-group'>
 			<button onClick={() => gotoPage(0)} className='btn btn-info'>
 				First
 			</button>

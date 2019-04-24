@@ -9,35 +9,19 @@ export default class SearchForm extends Component {
 		};
 	}
 
-	// onSubmit = ev => {
-	// 	ev.preventDefault();
-	// 	console.log('onSubmit');
-	// 	axios
-	// 		.get(
-	// 			`https://acme-users-api.herokuapp.com/api/users/search/${
-	// 				this.state.term
-	// 			}`
-	// 		)
-	// 		.then(resp => resp.data)
-	// 		.then(users => {
-	// 			// this.setState();
-	// 			console.log('users: ', users);
-	// 		})
-	// 		.catch(err => console.log(err));
-	// };
-
+	// TODO - why term does not stay in search field on hard refresh
 	onChange = ev => {
 		// console.log('ev: ', ev);
 		this.setState(
 			{
 				term: ev.target.value
-			},
-			() => console.log(this.state)
+			}
+			// () => console.log(this.state)
 		);
 	};
 
 	clear = () => {
-		console.log('history: ', this.props);
+		// console.log('history: ', this.props);
 		this.props.history.push('/users');
 	};
 
@@ -46,10 +30,22 @@ export default class SearchForm extends Component {
 		const { onSubmit } = this.props;
 		const { term } = this.state;
 		return (
-			<form onSubmit={onSubmit(term)}>
-				<input name='term' value={this.state.term} onChange={onChange} />
-				<button type='submit'>Search</button>
-				<button onClick={clear}>Clear</button>
+			<form id='search-form' onSubmit={onSubmit(term)} className='input-group'>
+				<input
+					name='term'
+					value={this.state.term}
+					onChange={onChange}
+					placeholder='Search Results'
+					className='form-control'
+				/>
+				<div className='input-group-append'>
+					<button type='submit' className='btn btn-primary'>
+						Search
+					</button>
+					<button onClick={clear} className='btn btn-info'>
+						Clear
+					</button>
+				</div>
 			</form>
 		);
 	}

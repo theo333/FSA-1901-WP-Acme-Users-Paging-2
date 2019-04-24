@@ -13,7 +13,6 @@ export default class Users extends Component {
 			users: [],
 			term: ''
 		};
-		console.log(this.props);
 	}
 
 	componentDidMount() {
@@ -21,20 +20,27 @@ export default class Users extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		const previous =
-			prevProps.match.params.usersIndex !== undefined
-				? prevProps.match.params.usersIndex
-				: 0;
+		// console.log('term: ', this.props.match.params.term);
+		// console.log(
+		// 	'includes search: ',
+		// 	this.props.location.pathname.includes('/search')
+		// );
+		let previous = '';
+		let current = '';
+		if (this.props.location.pathname.includes('/search')) {
+			const prevPropsSearch = prevProps.match.params.searchIndex;
+			const propsSearch = this.props.match.params.searchIndex;
+			previous = prevPropsSearch !== undefined ? prevPropsSearch : 0;
 
-		const current =
-			this.props.match.params.usersIndex !== undefined
-				? this.props.match.params.usersIndex
-				: 0;
-		// const previous =
-		// 	prevProps.match.url !== undefined ? prevProps.match.url : 'users/0';
+			current = propsSearch !== undefined ? propsSearch : 0;
+		} else {
+			const prevPropsUsers = prevProps.match.params.usersIndex;
+			const propsUsers = this.props.match.params.usersIndex;
+			previous = prevPropsUsers !== undefined ? prevPropsUsers : 0;
 
-		// const current =
-		// 	this.props.match.url !== undefined ? this.props.match.url : 'users/0';
+			current = propsUsers !== undefined ? propsUsers : 0;
+		}
+		// console.log('previous: ', previous, 'current: ', current);
 
 		if (previous !== current) {
 			this.setLocalState();
@@ -42,8 +48,7 @@ export default class Users extends Component {
 	}
 
 	setLocalState = () => {
-		console.log('props: ', this.props);
-		// if ((this.props.location.pathname === '/search')) {
+		// console.log('props: ', this.props);
 		// if (this.props.match.url === '/search') {
 		if (this.props.location.pathname.includes('/search')) {
 			const term =
@@ -58,15 +63,17 @@ export default class Users extends Component {
 			axios
 				.get(
 					`https://acme-users-api.herokuapp.com/api/users/search/${term}${
-						searchIndex ? searchIndex + '/' : ''
+						searchIndex ? '/' + searchIndex : ''
 					}`
 				)
 				.then(resp => resp.data)
 				.then(({ count, users }) => {
 					// console.log('count: ', count);
 					// console.log('users: ', users);
-					this.setState({ count, users, term }, () =>
-						console.log('state from search: ', this.state)
+					this.setState(
+						{ count, users, term }
+						//  () =>
+						// console.log('state from search: ', this.state)
 					);
 				})
 
@@ -88,8 +95,10 @@ export default class Users extends Component {
 				.then(({ count, users }) => {
 					// console.log('count: ', count);
 					// console.log('users: ', users);
-					this.setState({ count, users }, () =>
-						console.log('state from users: ', this.state)
+					this.setState(
+						{ count, users }
+						// () =>
+						// console.log('state from users: ', this.state)
 					);
 				})
 
@@ -119,7 +128,7 @@ export default class Users extends Component {
 	};
 
 	render() {
-		const { count, users } = this.state;
+		const { count, users, term } = this.state;
 		const tableHeaders = [
 			'First Name',
 			'Last Name',
@@ -181,13 +190,45 @@ export default class Users extends Component {
 							// .replace(regex, `<span>${matchStr}</span>`)
 							var regex = /(Zachary)/g;
 							var matchStr = 'Zachary';
+
+							const highlight = (text, word) => {
+								const regex = new RegExp('(' + word + ')', 'gi');
+								// const regex = /(word)/gi;
+								// console.log('regex: ', regex);
+								// console.log('orig text: ', text);
+								// text.replace(regex, '$&,');
+
+								const result = text.replace(
+									regex,
+									(str, matched, offset, input) => {
+										// console.log('matched: ', `<span>${matched}</span>`);
+										return `<span class='highlight'>${matched}</span>`;
+									}
+								);
+
+								console.log('new text: ', result);
+								return result;
+							};
+							console.log(highlight(email, term));
+
+							const _email = term ? highlight(email, term) : email;
+							const _middleName = term
+								? highlight(middleName, term)
+								: middleName;
+
 							return (
 								<tr key={id}>
 									<td>{firstName}</td>
 									<td>{lastName}</td>
-									<td>{middleName}</td>
-									<td>{email}</td>
-									{/* <td>{email.replace(matchStr, `${<span>Zachary</span>}`)}</td> */}
+									<td>{_middleName}</td>
+									<td>
+										<div
+											dangerouslySetInnerHTML={{
+												__html: highlight(email, term)
+											}}
+										/>
+									</td>
+									{/* <td>{_email}</td> */}
 									<td>{title}</td>
 								</tr>
 							);
