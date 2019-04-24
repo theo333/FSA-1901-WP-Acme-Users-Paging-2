@@ -1,23 +1,21 @@
-# \_project_name
+##Acme Users Paging 2
 
 ### View live on Heroku
 
 heroku_url
 
 ### Project Details
-
-- assigned
-- due
-- (?) No beginning repo
-- Replicate this: profs_heroku_url
-- Description:
+- assigned 4/18/19
+- due 4/23/19
+- No beginning repo
+- Replicate this: https://fs-front-end-project.herokuapp.com/#/
+- Description: Given api endpoints, create front-end to display Users. Enable search of users with search term highlighted.
 
 ### Challenges
-
--
+- search
+- highlighting search terms - used regex and str.replace()
 
 ### Technologies and Concepts Used
-
 - Node.js
 - Express
 - Sequelize
@@ -26,7 +24,6 @@ heroku_url
 - Axios
 - Deploy to Heroku
 
-# react-minimal template
-
+### react-minimal template
 - npm install
 - npm run start:dev
