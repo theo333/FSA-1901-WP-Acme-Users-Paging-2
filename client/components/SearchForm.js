@@ -21,7 +21,6 @@ export default class SearchForm extends Component {
 	};
 
 	clear = () => {
-		// console.log('history: ', this.props);
 		this.props.history.push('/users');
 	};
 
@@ -39,10 +38,18 @@ export default class SearchForm extends Component {
 					className='form-control'
 				/>
 				<div className='input-group-append'>
-					<button type='submit' className='btn btn-primary'>
+					<button
+						type='submit'
+						className='btn btn-primary'
+						disabled={!this.state.term ? ' disabled' : ''}
+					>
 						Search
 					</button>
-					<button onClick={clear} className='btn btn-info'>
+					<button
+						onClick={clear}
+						className='btn btn-info'
+						disabled={!this.state.term ? ' disabled' : ''}
+					>
 						Clear
 					</button>
 				</div>
