@@ -2,7 +2,7 @@
 
 ### View live on Heroku
 
-heroku_url
+https://acme-users-paging-tcm.herokuapp.com/#/
 
 ### Project Details
 - assigned 4/18/19
