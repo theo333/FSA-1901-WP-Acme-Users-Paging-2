@@ -11,7 +11,8 @@ export default class Users extends Component {
 		this.state = {
 			count: 0,
 			users: [],
-			term: ''
+			term: '',
+			errors: []
 		};
 	}
 
@@ -69,7 +70,11 @@ export default class Users extends Component {
 				.then(({ count, users }) => {
 					this.setState({ count, users, term });
 				})
-				.catch(err => console.log(err));
+				.catch(err => {
+					this.setState({ errors: [...this.state.errors, err] }, () =>
+						console.log(this.state)
+					);
+				});
 		}
 		// users route
 		else {
@@ -87,7 +92,11 @@ export default class Users extends Component {
 				.then(({ count, users }) => {
 					this.setState({ count, users });
 				})
-				.catch(err => console.log(err));
+				.catch(err => {
+					this.setState({ errors: [...this.state.errors, err] }, () =>
+						console.log(this.state)
+					);
+				});
 		}
 	};
 
