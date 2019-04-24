@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 export default class SearchForm extends Component {
 	constructor() {
@@ -9,7 +8,7 @@ export default class SearchForm extends Component {
 		};
 	}
 
-	// TODO - why term does not stay in search field on hard refresh
+	// TODO - why term does not stay in search field after click search or on hard refresh
 	onChange = ev => {
 		// console.log('ev: ', ev);
 		this.setState(
@@ -20,6 +19,8 @@ export default class SearchForm extends Component {
 		);
 	};
 
+	// TODO - best way to implement clear
+	//
 	clear = () => {
 		this.props.history.push('/users');
 	};
@@ -28,11 +29,12 @@ export default class SearchForm extends Component {
 		const { onChange, clear } = this;
 		const { onSubmit } = this.props;
 		const { term } = this.state;
+
 		return (
 			<form id='search-form' onSubmit={onSubmit(term)} className='input-group'>
 				<input
 					name='term'
-					value={this.state.term}
+					value={term}
 					onChange={onChange}
 					placeholder='Search Results'
 					className='form-control'
@@ -41,14 +43,14 @@ export default class SearchForm extends Component {
 					<button
 						type='submit'
 						className='btn btn-primary'
-						disabled={!this.state.term ? ' disabled' : ''}
+						disabled={!term ? ' disabled' : ''}
 					>
 						Search
 					</button>
 					<button
 						onClick={clear}
 						className='btn btn-info'
-						disabled={!this.state.term ? ' disabled' : ''}
+						disabled={!term ? ' disabled' : ''}
 					>
 						Clear
 					</button>

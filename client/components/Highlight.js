@@ -3,7 +3,6 @@ import React from 'react';
 export const highlight = (strToSearch, searchTerm) => {
 	const regex = new RegExp('(' + searchTerm + ')', 'gi');
 
-	// curried ??
 	return strToSearch.replace(regex, (str, matched, offset, input) => {
 		return `<span class='highlight'>${matched}</span>`;
 	});

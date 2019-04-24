@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-// TODO - change to class because have a class method - gotoPage
-
 export default class Pager extends Component {
 	constructor(props) {
 		super(props);

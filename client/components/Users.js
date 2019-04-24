@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import Pager from './Pager';
@@ -21,36 +20,35 @@ export default class Users extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		// console.log('term: ', this.props.match.params.term);
-		// console.log(
-		// 	'includes search: ',
-		// 	this.props.location.pathname.includes('/search')
-		// );
 		let previous = '';
 		let current = '';
+		// search route
 		if (this.props.location.pathname.includes('/search')) {
 			const prevPropsSearch = prevProps.match.params.searchIndex;
 			const propsSearch = this.props.match.params.searchIndex;
+
 			previous = prevPropsSearch !== undefined ? prevPropsSearch : 0;
 
 			current = propsSearch !== undefined ? propsSearch : 0;
-		} else {
+		}
+		// users route
+		else {
 			const prevPropsUsers = prevProps.match.params.usersIndex;
 			const propsUsers = this.props.match.params.usersIndex;
+
 			previous = prevPropsUsers !== undefined ? prevPropsUsers : 0;
 
 			current = propsUsers !== undefined ? propsUsers : 0;
 		}
-		// console.log('previous: ', previous, 'current: ', current);
 
+		// update state if changed page
 		if (previous !== current) {
 			this.setLocalState();
 		}
 	}
 
 	setLocalState = () => {
-		// console.log('props: ', this.props);
-		// if (this.props.match.url === '/search') {
+		// search route
 		if (this.props.location.pathname.includes('/search')) {
 			const term =
 				this.props.match.params.term !== undefined
@@ -69,19 +67,12 @@ export default class Users extends Component {
 				)
 				.then(resp => resp.data)
 				.then(({ count, users }) => {
-					// console.log('count: ', count);
-					// console.log('users: ', users);
-					this.setState(
-						{ count, users, term }
-						//  () =>
-						// console.log('state from search: ', this.state)
-					);
+					this.setState({ count, users, term });
 				})
-
 				.catch(err => console.log(err));
-		} else {
-			// if (this.props.location.pathname === '/users') {
-			// if (this.props.match.url === '/users') {
+		}
+		// users route
+		else {
 			const usersIndex =
 				this.props.match.params.usersIndex !== undefined
 					? this.props.match.params.usersIndex
@@ -94,36 +85,23 @@ export default class Users extends Component {
 				)
 				.then(resp => resp.data)
 				.then(({ count, users }) => {
-					// console.log('count: ', count);
-					// console.log('users: ', users);
-					this.setState(
-						{ count, users }
-						// () =>
-						// console.log('state from users: ', this.state)
-					);
+					this.setState({ count, users });
 				})
-
 				.catch(err => console.log(err));
 		}
 	};
 
+	// note: set up method this way in order to be able to pass in term param, otherwise only takes ev (event)
 	onSubmit = term => {
 		return ev => {
-			console.log('ev: ', ev);
 			ev.preventDefault();
-			console.log('onSubmit');
 			axios
 				.get(`https://acme-users-api.herokuapp.com/api/users/search/${term}`)
 				.then(resp => resp.data)
 				.then(({ count, users }) => {
-					// console.log('count: ', count);
-					// console.log('users: ', users);
-					this.setState({ count, users, term }, () =>
-						console.log('state after onSubmit search: ', this.state)
-					);
+					this.setState({ count, users, term });
 				})
 				.then(() => this.props.history.push(`/users/search/${term}`))
-
 				.catch(err => console.log(err));
 		};
 	};
@@ -138,8 +116,6 @@ export default class Users extends Component {
 			'Title'
 		];
 		const { match, history, location } = this.props;
-
-		// console.log('location: ', location);
 
 		let currentPage = '';
 
@@ -160,6 +136,7 @@ export default class Users extends Component {
 				<div id='stats'>
 					{count} Results. Page {currentPage} of {totalPages}
 				</div>
+
 				<Pager
 					currentPage={currentPage}
 					totalPages={totalPages}
@@ -167,6 +144,7 @@ export default class Users extends Component {
 					match={match}
 				/>
 				<SearchForm onSubmit={this.onSubmit} history={history} />
+
 				<table className='table table-striped'>
 					<thead>
 						<tr>

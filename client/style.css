@@ -4,8 +4,8 @@
 	margin: 10px auto;
 }
 
-.highlight {
-	background-color: gold;
+#content {
+	margin-top: 10px;
 }
 
 #stats {
@@ -18,4 +18,8 @@
 
 #search-form {
 	margin: 15px auto 20px;
+}
+
+.highlight {
+	background-color: gold;
 }
