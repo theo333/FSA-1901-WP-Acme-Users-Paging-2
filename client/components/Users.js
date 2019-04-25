@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import Pager from './Pager';
 import SearchForm from './SearchForm';
-import { displayHighlight } from './Highlight';
+import UsersTable from './UsersTable';
 
 export default class Users extends Component {
 	constructor(props) {
@@ -122,13 +122,6 @@ export default class Users extends Component {
 
 	render() {
 		const { count, users, term } = this.state;
-		const tableHeaders = [
-			'First Name',
-			'Last Name',
-			'Middle Name',
-			'Email',
-			'Title'
-		];
 		const { match, history, location } = this.props;
 
 		let currentPage = '';
@@ -150,7 +143,6 @@ export default class Users extends Component {
 				<div id='stats'>
 					{count} Results. Page {currentPage} of {totalPages}
 				</div>
-
 				<Pager
 					currentPage={currentPage}
 					totalPages={totalPages}
@@ -158,43 +150,7 @@ export default class Users extends Component {
 					match={match}
 				/>
 				<SearchForm onSubmit={this.onSubmit} history={history} term={term} />
-
-				<table className='table table-striped'>
-					<thead>
-						<tr>
-							{tableHeaders.map(header => {
-								return <th key={header}>{header}</th>;
-							})}
-						</tr>
-					</thead>
-					<tbody>
-						{users.map(user => {
-							const {
-								id,
-								firstName,
-								lastName,
-								middleName,
-								email,
-								title
-							} = user;
-
-							const userFields = [
-								firstName,
-								lastName,
-								middleName,
-								email,
-								title
-							];
-							return (
-								<tr key={id}>
-									{userFields.map((field, idx) => {
-										return <td key={idx}>{displayHighlight(field, term)}</td>;
-									})}
-								</tr>
-							);
-						})}
-					</tbody>
-				</table>
+				<UsersTable users={users} term={term} />
 			</div>
 		);
 	}
