@@ -6,7 +6,7 @@ export default class SearchForm extends Component {
 		this.state = {
 			term: ''
 		};
-		console.log('constr: ', this.props);
+		console.log('constr props: ', this.props);
 	}
 
 	// TODO - why term does not stay in search field after click search or on hard refresh
@@ -20,15 +20,13 @@ export default class SearchForm extends Component {
 		);
 	};
 
-	// TODO - best way to implement clear
-	//
 	clear = () => {
 		this.props.history.push('/users');
 	};
 
 	render() {
-		const { onChange, clear, handleSubmit } = this;
-		const { onSubmit } = this.props;
+		const { onChange, clear } = this;
+		const { onSubmit, history } = this.props;
 		const { term } = this.state;
 		return (
 			<form id='search-form' onSubmit={onSubmit(term)} className='input-group'>
@@ -50,7 +48,9 @@ export default class SearchForm extends Component {
 					<button
 						onClick={clear}
 						className='btn btn-info'
-						disabled={!term ? ' disabled' : ''}
+						disabled={
+							!history.location.pathname.includes('/search') ? ' disabled' : ''
+						}
 					>
 						Clear
 					</button>
