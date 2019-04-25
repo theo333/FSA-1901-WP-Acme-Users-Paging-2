@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { displayHighlight } from './Highlight';
+import { displayHighlight } from './HighlightHelper';
 
 const UsersTable = ({ users, term }) => {
 	const tableHeaders = [
