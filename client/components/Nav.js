@@ -1,13 +1,11 @@
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Nav = ({ location: { pathname } }) => {
 	const navItems = [
 		{ name: 'Home', path: '/' },
 		{ name: 'Users', path: '/users' }
 	];
-
-	// TODO - NavLink activeClass not working properly. Home always showing active.
 
 	return (
 		<nav>
@@ -22,9 +20,6 @@ const Nav = ({ location: { pathname } }) => {
 							>
 								{name}
 							</Link>
-							<NavLink to={path} className='nav-link'>
-								{name}
-							</NavLink>
 						</li>
 					);
 				})}

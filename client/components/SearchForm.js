@@ -6,18 +6,14 @@ export default class SearchForm extends Component {
 		this.state = {
 			term: ''
 		};
-		console.log('constr props: ', this.props);
 	}
 
 	// TODO - why term does not stay in search field after click search or on hard refresh
 	onChange = ev => {
 		// console.log('ev: ', ev);
-		this.setState(
-			{
-				term: ev.target.value
-			},
-			() => console.log(this.state)
-		);
+		this.setState({
+			term: ev.target.value
+		});
 	};
 
 	clear = () => {
