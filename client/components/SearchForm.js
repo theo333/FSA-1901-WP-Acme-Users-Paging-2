@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 
 export default class SearchForm extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			term: ''
 		};
+		console.log('constr: ', this.props);
 	}
 
 	// TODO - why term does not stay in search field after click search or on hard refresh
@@ -14,8 +15,8 @@ export default class SearchForm extends Component {
 		this.setState(
 			{
 				term: ev.target.value
-			}
-			// () => console.log(this.state)
+			},
+			() => console.log(this.state)
 		);
 	};
 
@@ -26,10 +27,9 @@ export default class SearchForm extends Component {
 	};
 
 	render() {
-		const { onChange, clear } = this;
+		const { onChange, clear, handleSubmit } = this;
 		const { onSubmit } = this.props;
 		const { term } = this.state;
-
 		return (
 			<form id='search-form' onSubmit={onSubmit(term)} className='input-group'>
 				<input

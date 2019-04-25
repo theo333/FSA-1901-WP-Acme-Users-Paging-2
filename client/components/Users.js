@@ -111,7 +111,12 @@ export default class Users extends Component {
 					this.setState({ count, users, term });
 				})
 				.then(() => this.props.history.push(`/users/search/${term}`))
-				.catch(err => console.log(err));
+				.then(() => console.log('users state:', this.state))
+				.catch(err => {
+					this.setState({ errors: [...this.state.errors, err] }, () =>
+						console.log(this.state)
+					);
+				});
 		};
 	};
 
@@ -152,7 +157,7 @@ export default class Users extends Component {
 					history={history}
 					match={match}
 				/>
-				<SearchForm onSubmit={this.onSubmit} history={history} />
+				<SearchForm onSubmit={this.onSubmit} history={history} term={term} />
 
 				<table className='table table-striped'>
 					<thead>
